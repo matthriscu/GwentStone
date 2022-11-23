@@ -4,7 +4,7 @@ import card.character.minion.Minion;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import game.BoardRow;
 import game.Game;
-import player.Player;
+import game.Player;
 
 public final class EndPlayerTurnAction extends Action {
     private Game game;

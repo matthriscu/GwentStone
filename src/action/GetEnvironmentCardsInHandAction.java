@@ -2,7 +2,7 @@ package action;
 
 import card.Card;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import player.Player;
+import game.Player;
 import java.util.ArrayList;
 import java.util.List;
 

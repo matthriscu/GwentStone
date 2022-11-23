@@ -1,7 +1,7 @@
 package card;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import player.Player;
+import game.Player;
 import java.util.List;
 
 public abstract class Card {

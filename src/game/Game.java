@@ -2,7 +2,6 @@ package game;
 
 import card.character.minion.Minion;
 import fileio.Coordinates;
-import player.Player;
 
 import static game.BoardRow.Type.BACK;
 import static game.BoardRow.Type.FRONT;

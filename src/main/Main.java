@@ -1,7 +1,8 @@
 package main;
 
 import action.Action;
-import card.Factory;
+import action.ActionFactory;
+import card.CardFactory;
 import checker.Checker;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.ObjectWriter;
@@ -13,7 +14,7 @@ import fileio.GameInput;
 import fileio.Input;
 import fileio.StartGameInput;
 import game.Game;
-import player.Player;
+import game.Player;
 import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
@@ -77,8 +78,8 @@ public final class Main {
 
         Player.resetStats();
 
-        Player.getInstance(1).setDecks(Factory.makeDecks(inputData.getPlayerOneDecks()));
-        Player.getInstance(2).setDecks(Factory.makeDecks(inputData.getPlayerTwoDecks()));
+        Player.getInstance(1).setDecks(CardFactory.makeDecks(inputData.getPlayerOneDecks()));
+        Player.getInstance(2).setDecks(CardFactory.makeDecks(inputData.getPlayerTwoDecks()));
 
         for (GameInput gameInput : inputData.getGames()) {
             StartGameInput startGameInput = gameInput.getStartGame();
@@ -95,7 +96,7 @@ public final class Main {
                     Player.getInstance(startGameInput.getStartingPlayer()).getOpponent());
 
             for (ActionsInput actionsInput : gameInput.getActions()) {
-                Action action = Factory.makeAction(actionsInput, game);
+                Action action = ActionFactory.makeAction(actionsInput, game);
                 ObjectNode objectNode = action.perform();
                 if (objectNode != null) {
                     output.add(objectNode);

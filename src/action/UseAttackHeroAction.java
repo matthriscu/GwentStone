@@ -4,7 +4,7 @@ import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import fileio.Coordinates;
 import game.Game;
-import player.Player;
+import game.Player;
 
 public final class UseAttackHeroAction extends Action {
     private Game game;

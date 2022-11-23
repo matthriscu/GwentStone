@@ -1,7 +1,7 @@
 package action;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import player.Player;
+import game.Player;
 
 public final class GetPlayerOneWinsAction extends Action {
     /**

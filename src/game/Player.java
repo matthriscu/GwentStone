@@ -1,12 +1,12 @@
-package player;
+package game;
 
 import card.Card;
-import card.Factory;
+import card.CardFactory;
 import card.character.hero.Hero;
 import card.character.minion.Minion;
 import card.environment.Environment;
 import fileio.CardInput;
-import game.BoardRow;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
@@ -137,7 +137,7 @@ public final class Player {
         Collections.shuffle(currentDeck, new Random(shuffleSeed));
 
         boardRows = new BoardRow[]{new BoardRow(this, FRONT), new BoardRow(this, BACK)};
-        hero = (Hero) Factory.makeCard(heroInput);
+        hero = (Hero) CardFactory.makeCard(heroInput);
         hero.setOwner(this);
 
         hand = new ArrayList<>();

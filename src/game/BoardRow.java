@@ -1,7 +1,7 @@
 package game;
 
 import card.character.minion.Minion;
-import player.Player;
+
 import java.util.ArrayList;
 
 public final class BoardRow {
