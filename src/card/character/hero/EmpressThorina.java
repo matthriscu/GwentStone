@@ -2,19 +2,20 @@ package card.character.hero;
 
 import card.character.minion.Minion;
 import game.BoardRow;
+import lombok.NoArgsConstructor;
 
 import java.util.Comparator;
 
+@NoArgsConstructor
 public final class EmpressThorina extends Hero {
-    public EmpressThorina() {
-    }
-
     public EmpressThorina(final EmpressThorina empressThorina) {
         super(empressThorina);
     }
 
     /**
-     * Uses this hero's ability
+     * Uses this hero's ability on the given BoardRow
+     *
+     * @throws Exception if the hero cannot use its ability for any reason
      */
     public void useAbility(final BoardRow boardRow) throws Exception {
         if (!canUseAbility()) {
@@ -35,7 +36,7 @@ public final class EmpressThorina extends Hero {
     }
 
     /**
-     * Create a deep copy of this card
+     * Creates a deep copy of this card
      */
     public EmpressThorina copy() {
         return new EmpressThorina(this);

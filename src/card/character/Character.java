@@ -2,50 +2,40 @@ package card.character;
 
 import card.Card;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AccessLevel;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 public abstract class Character extends Card {
+    @Getter
+    @Setter
     private int health;
+    @Getter
+    @Setter
     @JsonIgnore
     private boolean hasAttacked;
-
-    protected Character() {
-    }
 
     protected Character(final Character character) {
         super(character);
         setHealth(character.getHealth());
-        setHasAttacked(character.getHasAttacked());
-    }
-
-    public final int getHealth() {
-        return health;
-    }
-
-    public final void setHealth(final int health) {
-        this.health = health;
-    }
-
-    @JsonIgnore
-    public final boolean getHasAttacked() {
-        return hasAttacked;
-    }
-
-    public final void setHasAttacked(final boolean hasAttacked) {
-        this.hasAttacked = hasAttacked;
+        setHasAttacked(character.isHasAttacked());
     }
 
     /**
-     * @return Whether this minion can use their ability
+     * @return true - if this minion can use its ability
+     * @throws Exception if this character can't use its ability, or if it doesn't have one
      */
     public abstract boolean canUseAbility() throws Exception;
 
     /**
-     * Resets this minion for the following round
+     * Resets this characther for the start of the next round
      */
     public abstract void reset();
 
     /**
-     * Create a deep copy of this card
+     * Creates a deep copy of this card
      */
     public abstract Character copy();
 }

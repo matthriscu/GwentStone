@@ -5,18 +5,18 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import fileio.Coordinates;
 import game.Game;
 import game.Player;
+import lombok.AllArgsConstructor;
 
-public final class UseAttackHeroAction extends Action {
+@AllArgsConstructor
+final class UseAttackHeroAction extends Action {
     private Game game;
     private Coordinates cardAttacker;
 
-    public UseAttackHeroAction(final Game game, final Coordinates cardAttacker) {
-        this.game = game;
-        this.cardAttacker = cardAttacker;
-    }
-
     /**
-     * Attacks the enemy player's hero
+     * Attacks the current player's opponent's hero
+     *
+     * @return A json object describing any errors that have occurred, or if this attack resulted
+     * in the current player winning the game
      */
     public ObjectNode perform() {
         ObjectNode objectNode = null;
@@ -24,13 +24,14 @@ public final class UseAttackHeroAction extends Action {
         try {
             game.getMinionAtPosition(cardAttacker).attackHero();
 
-            if (game.getCurrentPlayer().getOpponent().getHero().getHealth() <= 0) {
-                game.getCurrentPlayer().incrementGamesWon();
+            Player currentPlayer = game.getCurrentPlayer();
+
+            if (currentPlayer.getOpponent().getHero().getHealth() <= 0) {
+                currentPlayer.setGamesWon(currentPlayer.getGamesWon() + 1);
                 objectNode = JsonNodeFactory.instance.objectNode();
-                objectNode.put("gameEnded",
-                        game.getCurrentPlayer() == Player.getInstance(1)
-                                ? "Player one killed the enemy hero."
-                                : "Player two killed the enemy hero.");
+                objectNode.put("gameEnded", game.getCurrentPlayer() == Player.getInstance(1)
+                        ? "Player one killed the enemy hero."
+                        : "Player two killed the enemy hero.");
             }
         } catch (Exception e) {
             objectNode = super.perform();

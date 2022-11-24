@@ -5,7 +5,9 @@ import game.Player;
 
 public final class GetTotalGamesPlayedAction extends Action {
     /**
-     * Gets the total number of games played
+     * Gets the total number of games played by both players
+     *
+     * @return A json object containing the number of games played by both players
      */
     public ObjectNode perform() {
         ObjectNode objectNode = super.perform();

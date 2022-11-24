@@ -4,18 +4,17 @@ import card.character.minion.Minion;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import fileio.Coordinates;
 import game.Game;
+import lombok.AllArgsConstructor;
 
+@AllArgsConstructor
 public final class GetCardAtPositionAction extends Action {
     private Game game;
     private Coordinates coordinates;
 
-    public GetCardAtPositionAction(final Game game, final Coordinates coordinates) {
-        this.game = game;
-        this.coordinates = coordinates;
-    }
-
     /**
-     * Gets the card at the position specified in coordinates
+     * Gets a minion from the position specified in coordinates
+     *
+     * @return A json object describing the minion, or any errors that have occurred
      */
     public ObjectNode perform() {
         ObjectNode objectNode = super.perform();

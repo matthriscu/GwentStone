@@ -2,20 +2,22 @@ package card.environment;
 
 import card.character.minion.Minion;
 import game.BoardRow;
+import lombok.NoArgsConstructor;
+
 import java.util.ArrayList;
 
+@NoArgsConstructor
 public final class Firestorm extends Environment {
-    public Firestorm() {
-    }
-
     private Firestorm(final Firestorm firestorm) {
         super(firestorm);
     }
 
     /**
-     * Uses this card's ability
+     * Applies this card's effect to the targeted board row
+     *
+     * @throws Exception if this card cannot be used for any reason
      */
-    public void useAbility(final BoardRow boardRow) throws Exception {
+    public void applyEffect(final BoardRow boardRow) throws Exception {
         if (boardRow.getOwner() == getOwner()) {
             throw new Exception("Chosen row does not belong to the enemy.");
         }
@@ -30,7 +32,7 @@ public final class Firestorm extends Environment {
     }
 
     /**
-     * Create a deep copy of this card
+     * Creates a deep copy of this card
      */
     public Firestorm copy() {
         return new Firestorm(this);

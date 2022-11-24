@@ -1,14 +1,17 @@
 package card.character.minion;
 
-public final class TheCursedOne extends Minion {
-    public TheCursedOne() {
-    }
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
+public final class TheCursedOne extends Minion {
     public TheCursedOne(final TheCursedOne theCursedOne) {
         super(theCursedOne);
     }
+
     /**
-     * Uses this minion's ability
+     * Uses this minion's ability on another minion
+     *
+     * @throws Exception if this minion can't use its ability for any reason
      */
     public void useAbility(final Minion minion) throws Exception {
         if (!canUseAbility()) {
@@ -19,7 +22,7 @@ public final class TheCursedOne extends Minion {
             throw new Exception("Attacked card does not belong to the enemy.");
         }
 
-        if (minion.getOwner().hasTanks() && !minion.isTank()) {
+        if (minion.getOwner().getTanks() > 0 && !minion.isTank()) {
             throw new Exception("Attacked card is not of type 'Tank'.");
         }
 
@@ -35,7 +38,7 @@ public final class TheCursedOne extends Minion {
     }
 
     /**
-     * Create a deep copy of this card
+     * Creates a deep copy of this card
      */
     public TheCursedOne copy() {
         return new TheCursedOne(this);

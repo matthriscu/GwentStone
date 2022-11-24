@@ -4,18 +4,19 @@ import card.character.minion.Minion;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import game.BoardRow;
 import game.Game;
+import lombok.AllArgsConstructor;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@AllArgsConstructor
 public final class GetFrozenCardsOnTableAction extends Action {
     private Game game;
 
-    public GetFrozenCardsOnTableAction(final Game game) {
-        this.game = game;
-    }
-
     /**
-     * Gets the frozen cards on the table
+     * Gets the minions that are currently frozen on the table
+     *
+     * @return A json object describing the minions
      */
     public ObjectNode perform() {
         List<List<Minion>> onTable = new ArrayList<>();
@@ -39,6 +40,7 @@ public final class GetFrozenCardsOnTableAction extends Action {
 
         ObjectNode objectNode = super.perform();
         objectNode.putPOJO("output", onTable);
+
         return objectNode;
     }
 

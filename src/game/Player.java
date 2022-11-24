@@ -6,31 +6,44 @@ import card.character.hero.Hero;
 import card.character.minion.Minion;
 import card.environment.Environment;
 import fileio.CardInput;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+
 import static game.BoardRow.Type.BACK;
 import static game.BoardRow.Type.FRONT;
 import static java.lang.Math.min;
 
 public final class Player {
     private static final int MAX_ROUND_MANA = 10;
-    private static Player[] players  = new Player[]{
-            new Player(1),
-            new Player(2)
-    };
+    private static Player[] players = new Player[]{new Player(1), new Player(2)};
+    @Getter
     private BoardRow[] boardRows;
+    @Getter
     private List<List<Card>> decks;
+    @Getter
     private List<Card> currentDeck;
+    @Getter
     private List<Card> hand;
+    @Getter
     private int mana;
+    @Getter
+    @Setter
     private Hero hero;
+    @Getter
     private int id;
+    @Getter
+    @Setter
     private int tanks;
+    @Getter
+    @Setter
     private int gamesWon;
+    @Getter
     private int gamesPlayed;
 
     private Player(final int id) {
@@ -50,6 +63,9 @@ public final class Player {
 
     /**
      * Resets all player stats
+     * <p>
+     * This method is necessary because all tests are run within one instance of the program and
+     * player stats persist because the players are static.
      */
     public static void resetStats() {
         players[0].gamesPlayed = 0;
@@ -58,12 +74,8 @@ public final class Player {
         players[1].gamesWon = 0;
     }
 
-    public List<List<Card>> getDecks() {
-        return decks;
-    }
-
     /**
-     * Sets this player's decks
+     * Sets this player's decks and sets this player as the owner of all cards within them
      */
     public void setDecks(final List<List<Card>> decks) {
         this.decks = decks;
@@ -75,49 +87,8 @@ public final class Player {
         }
     }
 
-    public Hero getHero() {
-        return hero;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public int getTanks() {
-        return tanks;
-    }
-
-    public void setTanks(final int tanks) {
-        this.tanks = tanks;
-    }
-
-    public List<Card> getCurrentDeck() {
-        return currentDeck;
-    }
-    public List<Card> getHand() {
-        return hand;
-    }
-    public int getMana() {
-        return mana;
-    }
-
-    public int getGamesWon() {
-        return gamesWon;
-    }
-
     /**
-     * Increments this player's number of wins
-     */
-    public void incrementGamesWon() {
-        ++gamesWon;
-    }
-
-    public int getGamesPlayed() {
-        return gamesPlayed;
-    }
-
-    /**
-     * Gets one of the 2 players
+     * Gets one of the player instances
      */
     public static Player getInstance(final int id) {
         return players[id - 1];
@@ -126,8 +97,7 @@ public final class Player {
     /**
      * Prepares this player for a new game
      */
-    public void startGameSetup(final int deckIndex,
-                               final int shuffleSeed,
+    public void startGameSetup(final int deckIndex, final int shuffleSeed,
                                final CardInput heroInput) {
         currentDeck = new LinkedList<>();
         for (Card card : decks.get(deckIndex)) {
@@ -148,17 +118,6 @@ public final class Player {
         roundStart(1);
     }
 
-    public BoardRow[] getBoardRows() {
-        return boardRows;
-    }
-
-    /**
-     * Checks if a player has tanks
-     */
-    public boolean hasTanks() {
-        return tanks > 0;
-    }
-
     /**
      * Draws a card from a player's deck, if it isn't empty
      */
@@ -170,15 +129,18 @@ public final class Player {
 
     /**
      * Gives a player resources at the beginning of every round
-     * @param roundIndex
      */
     public void roundStart(final int roundIndex) {
-        drawCard();
+        if (!currentDeck.isEmpty()) {
+            hand.add(currentDeck.remove(0));
+        }
         mana += min(roundIndex, MAX_ROUND_MANA);
     }
 
     /**
      * Places a minion from a player's hand
+     *
+     * @throws Exception if this player cannot place the specified card
      */
     public void placeCard(final int index) throws Exception {
         if (hand.get(index).getType() == Card.Type.ENVIRONMENT) {
@@ -207,6 +169,8 @@ public final class Player {
 
     /**
      * Uses an environment card from this player's hand
+     *
+     * @throws Exception if this player cannot use the specified environment card
      */
     public void useEnvironmentCard(final int index, final BoardRow affectedRow) throws Exception {
         if (hand.get(index).getType() != Card.Type.ENVIRONMENT) {
@@ -219,13 +183,15 @@ public final class Player {
             throw new Exception("Not enough mana to use environment card.");
         }
 
-        environment.useAbility(affectedRow);
+        environment.applyEffect(affectedRow);
         mana -= environment.getMana();
         hand.remove(index);
     }
 
     /**
      * Uses this player's hero's ability
+     *
+     * @throws Exception if this player cannot use their hero's ability for any reason
      */
     public void useHeroAbility(final BoardRow affectedRow) throws Exception {
         if (getHero().getMana() > mana) {

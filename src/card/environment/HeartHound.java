@@ -2,12 +2,12 @@ package card.environment;
 
 import card.character.minion.Minion;
 import game.BoardRow;
+import lombok.NoArgsConstructor;
+
 import java.util.Comparator;
 
+@NoArgsConstructor
 public final class HeartHound extends Environment {
-    public HeartHound() {
-    }
-
     public HeartHound(final HeartHound heartHound) {
         super(heartHound);
     }
@@ -15,7 +15,7 @@ public final class HeartHound extends Environment {
     /**
      * Uses this minion's ability
      */
-    public void useAbility(final BoardRow boardRow) throws Exception {
+    public void applyEffect(final BoardRow boardRow) throws Exception {
         if (boardRow.getOwner() == getOwner()) {
             throw new Exception("Chosen row does not belong to the enemy.");
         }
@@ -42,7 +42,7 @@ public final class HeartHound extends Environment {
     }
 
     /**
-     * Create a deep copy of this card
+     * Creates a deep copy of this card
      */
     public HeartHound copy() {
         return new HeartHound(this);

@@ -13,14 +13,14 @@ public abstract class Environment extends Card {
     }
 
     /**
-     * Uses this card's ability
+     * Applies this card's effect to the targeted board row
+     *
+     * @throws Exception if this card cannot be used for any reason
      */
-    public void useAbility(final BoardRow boardRow) throws Exception {
-        throw new Exception("This card does not have a special ability.");
-    }
+    public abstract void applyEffect(BoardRow boardRow) throws Exception;
 
     /**
-     * Create a deep copy of this card
+     * Creates a deep copy of this card
      */
     public abstract Environment copy();
 }

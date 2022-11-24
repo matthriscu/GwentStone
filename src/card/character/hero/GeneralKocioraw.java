@@ -2,17 +2,18 @@ package card.character.hero;
 
 import card.character.minion.Minion;
 import game.BoardRow;
+import lombok.NoArgsConstructor;
 
+@NoArgsConstructor
 public final class GeneralKocioraw extends Hero {
-    public GeneralKocioraw() {
-    }
-
     public GeneralKocioraw(final GeneralKocioraw generalKocioraw) {
         super(generalKocioraw);
     }
 
     /**
-     * Uses this hero's ability
+     * Uses this hero's ability on the given BoardRow
+     *
+     * @throws Exception if the hero cannot attack for any reason
      */
     public void useAbility(final BoardRow boardRow) throws Exception {
         if (!canUseAbility()) {
@@ -31,7 +32,7 @@ public final class GeneralKocioraw extends Hero {
     }
 
     /**
-     * Create a deep copy of this card
+     * Creates a deep copy of this card
      */
     public GeneralKocioraw copy() {
         return new GeneralKocioraw(this);

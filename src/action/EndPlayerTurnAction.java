@@ -5,16 +5,17 @@ import com.fasterxml.jackson.databind.node.ObjectNode;
 import game.BoardRow;
 import game.Game;
 import game.Player;
+import lombok.AllArgsConstructor;
 
+@AllArgsConstructor
 public final class EndPlayerTurnAction extends Action {
     private Game game;
 
-    public EndPlayerTurnAction(final Game game) {
-        this.game = game;
-    }
-
     /**
-     * Ends the current turn and starts the next round if the previous one is over
+     * Ends the current player's turn + sets up the next round if both players have played their
+     * turn
+     *
+     * @return null - this command never produces an output
      */
     public ObjectNode perform() {
         for (BoardRow boardRow : game.getCurrentPlayer().getBoardRows()) {

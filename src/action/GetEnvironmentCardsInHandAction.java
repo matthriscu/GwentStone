@@ -3,18 +3,19 @@ package action;
 import card.Card;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import game.Player;
+import lombok.AllArgsConstructor;
+
 import java.util.ArrayList;
 import java.util.List;
 
+@AllArgsConstructor
 public final class GetEnvironmentCardsInHandAction extends Action {
     private int playerIdx;
 
-    public GetEnvironmentCardsInHandAction(final int playerIdx) {
-        this.playerIdx = playerIdx;
-    }
-
     /**
-     * Gets the environment cards in the corresponding player's hand
+     * Gets the environment cards currently in a player's hand
+     *
+     * @return A json object describing the cards, or any errors that have occurred
      */
     public ObjectNode perform() {
         List<Card> hand = new ArrayList<>();
@@ -23,9 +24,11 @@ public final class GetEnvironmentCardsInHandAction extends Action {
                 hand.add(card.copy());
             }
         }
+
         ObjectNode objectNode = super.perform();
         objectNode.put("playerIdx", playerIdx);
         objectNode.putPOJO("output", hand);
+
         return objectNode;
     }
 

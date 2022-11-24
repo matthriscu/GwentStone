@@ -27,11 +27,11 @@ public final class CardFactory {
     }
 
     /**
-     * Translates CardInput into Card
+     * Converts a CardInput into a Card
      */
     public static Card makeCard(final CardInput cardInput) {
         Card card = switch (cardInput.getName()) {
-            case "Sentinel", "Berserker" -> new Minion(false);
+            case "Sentinel", "Berserker" -> new Minion();
             case "Goliath", "Warden" -> new Minion(true);
             case "The Ripper" -> new TheRipper();
             case "Miraj" -> new Miraj();
@@ -61,8 +61,7 @@ public final class CardFactory {
             minion.setPreferredRow(
                 switch (card.getName()) {
                     case "The Ripper", "Miraj", "Goliath", "Warden" -> FRONT;
-                    case "Sentinel", "Berserker", "The Cursed One", "Disciple"
-                            -> BACK;
+                    case "Sentinel", "Berserker", "The Cursed One", "Disciple" -> BACK;
                     default -> null;
                 }
             );
@@ -72,7 +71,7 @@ public final class CardFactory {
     }
 
     /**
-     * Translates decksInput into lists of Card
+     * Converts a DecksInput into a List of Lists of Cards
      */
     public static List<List<Card>> makeDecks(final DecksInput decksInput) {
         List<List<Card>> decks = new ArrayList<>();

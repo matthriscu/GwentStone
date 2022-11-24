@@ -2,18 +2,17 @@ package action;
 
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import game.Game;
+import lombok.AllArgsConstructor;
 
+@AllArgsConstructor
 public final class PlaceCardAction extends Action {
     private Game game;
     private int handIdx;
 
-    public PlaceCardAction(final Game game, final int handIdx) {
-        this.game = game;
-        this.handIdx = handIdx;
-    }
-
     /**
-     * Places a card from the current player's hand
+     * Places a minion from the current player's hand on the table
+     *
+     * @return A json object describing any errors that have occurred
      */
     public ObjectNode perform() {
         try {
@@ -23,6 +22,7 @@ public final class PlaceCardAction extends Action {
             ObjectNode objectNode = super.perform();
             objectNode.put("handIdx", handIdx);
             objectNode.put("error", e.getMessage());
+
             return objectNode;
         }
     }

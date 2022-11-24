@@ -1,28 +1,47 @@
 package card.character.minion;
 
 import card.character.Character;
+import card.character.hero.Hero;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import game.BoardRow;
+import lombok.Getter;
+import lombok.Setter;
+
 import static card.Card.Type.MINION;
 
 public class Minion extends Character {
+    @Getter
+    @Setter
     private int attackDamage;
+    @Getter
+    @Setter
+    @JsonIgnore
     private boolean isTank;
+    @Getter
+    @Setter
+    @JsonIgnore
     private boolean isFrozen;
+    @Getter
+    @Setter
+    @JsonIgnore
     private BoardRow boardRow;
+    @Getter
+    @Setter
+    @JsonIgnore
     private BoardRow.Type preferredRow;
 
     public Minion() {
-        this(false);
-    }
-
-    public Minion(final boolean isTank) {
         super();
         setType(MINION);
-        this.isTank = isTank;
+        this.isTank = false;
         this.isFrozen = false;
         this.boardRow = null;
         this.preferredRow = null;
+    }
+
+    public Minion(final boolean isTank) {
+        this();
+        this.isTank = isTank;
     }
 
     public Minion(final Minion minion) {
@@ -35,59 +54,17 @@ public class Minion extends Character {
         setPreferredRow(minion.getPreferredRow());
     }
 
-    public final int getAttackDamage() {
-        return attackDamage;
-    }
-
-    public final void setAttackDamage(final int attackDamage) {
-        this.attackDamage = attackDamage;
-    }
-
-    @JsonIgnore
-    public final boolean isTank() {
-        return isTank;
-    }
-
-    public final void setTank(final boolean tank) {
-        isTank = tank;
-    }
-
-    @JsonIgnore
-    public final boolean isFrozen() {
-        return isFrozen;
-    }
-
-    public final void setFrozen(final boolean frozen) {
-        isFrozen = frozen;
-    }
-
-    @JsonIgnore
-    public final BoardRow getBoardRow() {
-        return boardRow;
-    }
-
-    public final void setBoardRow(final BoardRow boardRow) {
-        this.boardRow = boardRow;
-    }
-
-    @JsonIgnore
-    public final BoardRow.Type getPreferredRow() {
-        return preferredRow;
-    }
-
-    public final void setPreferredRow(final BoardRow.Type preferredRow) {
-        this.preferredRow = preferredRow;
-    }
-
     /**
-     * Checks if this minion can use their ability
+     * Checks if this minion can use its ability
+     *
+     * @throws Exception if this minion can't use its ability for any reason
      */
     public boolean canUseAbility() throws Exception {
         if (isFrozen) {
             throw new Exception("Attacker card is frozen.");
         }
 
-        if (getHasAttacked()) {
+        if (isHasAttacked()) {
             throw new Exception("Attacker card has already attacked this turn.");
         }
 
@@ -95,14 +72,16 @@ public class Minion extends Character {
     }
 
     /**
-     * Uses this minion's ability
+     * Uses this minion's ability on another minion
+     *
+     * @throws Exception if this minion can't use its ability for any reason
      */
     public void useAbility(final Minion minion) throws Exception {
         throw new Exception("This minion doesn't have a special ability.");
     }
 
     /**
-     * Destroys this minion
+     * Removes this minion from its board row
      */
     public final void destroy() {
         if (isTank) {
@@ -113,7 +92,7 @@ public class Minion extends Character {
     }
 
     /**
-     * Resets this minion for the next round
+     * Resets this minion for the next round by clearing its "hasAttacked" field and unfreezing it
      */
     public final void reset() {
         setHasAttacked(false);
@@ -128,14 +107,16 @@ public class Minion extends Character {
     }
 
     /**
-     * Attacks another minions
+     * Attacks another minion
+     *
+     * @throws Exception if this minion can't attack for any reason
      */
     public final void attackMinion(final Minion minion) throws Exception {
         if (getOwner() == minion.getOwner()) {
             throw new Exception("Attacked card does not belong to the enemy.");
         }
 
-        if (getHasAttacked()) {
+        if (isHasAttacked()) {
             throw new Exception("Attacker card has already attacked this turn.");
         }
 
@@ -143,7 +124,7 @@ public class Minion extends Character {
             throw new Exception("Attacker card is frozen.");
         }
 
-        if (minion.getOwner().hasTanks() && !minion.isTank()) {
+        if (minion.getOwner().getTanks() > 0 && !minion.isTank()) {
             throw new Exception("Attacked card is not of type 'Tank'.");
         }
 
@@ -163,16 +144,17 @@ public class Minion extends Character {
             throw new Exception("Attacker card is frozen.");
         }
 
-        if (getHasAttacked()) {
+        if (isHasAttacked()) {
             throw new Exception("Attacker card has already attacked this turn.");
         }
 
-        if (getOwner().getOpponent().hasTanks()) {
+        if (getOwner().getOpponent().getTanks() > 0) {
             throw new Exception("Attacked card is not of type 'Tank'.");
         }
 
-        getOwner().getOpponent().getHero()
-                .setHealth(getOwner().getOpponent().getHero().getHealth() - attackDamage);
+        Hero attackedHero = getOwner().getOpponent().getHero();
+        attackedHero.setHealth(attackedHero.getHealth() - attackDamage);
+
         setHasAttacked(true);
     }
 }

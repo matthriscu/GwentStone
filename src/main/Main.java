@@ -92,8 +92,7 @@ public final class Main {
                     startGameInput.getShuffleSeed(),
                     startGameInput.getPlayerTwoHero());
 
-            Game game = new Game(Player.getInstance(startGameInput.getStartingPlayer()),
-                    Player.getInstance(startGameInput.getStartingPlayer()).getOpponent());
+            Game game = new Game(Player.getInstance(startGameInput.getStartingPlayer()));
 
             for (ActionsInput actionsInput : gameInput.getActions()) {
                 Action action = ActionFactory.makeAction(actionsInput, game);

@@ -15,19 +15,18 @@ public abstract class Hero extends Character {
         super(hero);
     }
 
-
     /**
-     * Uses this hero's ability
+     * Uses this hero's ability on the given BoardRow
+     *
+     * @throws Exception if the hero cannot attack for any reason
      */
-    public void useAbility(final BoardRow affectedRow) throws Exception {
-        throw new Exception("This hero doesn't have a special ability.");
-    }
+    public abstract void useAbility(BoardRow affectedRow) throws Exception;
 
     /**
      * Return's whether this hero can use their ability
      */
     public boolean canUseAbility() throws Exception {
-        if (getHasAttacked()) {
+        if (isHasAttacked()) {
             throw new Exception("Hero has already attacked this turn.");
         }
 
@@ -35,14 +34,14 @@ public abstract class Hero extends Character {
     }
 
     /**
-     * Resets this hero for the following round
+     * Resets this hero for the following round by clearing the "hasAttacked" field
      */
     public void reset() {
         setHasAttacked(false);
     }
 
     /**
-     * Create a deep copy of this card
+     * Creates a deep copy of this card
      */
     public abstract Hero copy();
 }
